@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +38,7 @@ namespace ConsoleApp1
 
         public static int RomanToInt(string s)
         {
-            Dictionary<char,int> romanNumber = new Dictionary<char, int>();
+            Dictionary<char, int> romanNumber = new Dictionary<char, int>();
             romanNumber.Add('I', 1);
             romanNumber.Add('V', 5);
             romanNumber.Add('X', 10);
@@ -47,16 +47,16 @@ namespace ConsoleApp1
             romanNumber.Add('D', 500);
             romanNumber.Add('M', 1000);
             var romanArr = s.ToArray();
-            int number=0;
+            int number = 0;
             int prevVal = 0;
-             foreach(var a in romanArr)
+            foreach (var a in romanArr)
             {
                 if (prevVal != 0)
                 {
                     if (prevVal < romanNumber[a])
                     {
                         //number -= prevVal;
-                        number += romanNumber[a] - prevVal ;
+                        number += romanNumber[a] - prevVal;
                         number -= romanNumber[a];
                     }
                     else
@@ -77,7 +77,7 @@ namespace ConsoleApp1
             int substrlength = 0;
             int longestsubstr = 0;
 
-             foreach (var item in arr)
+            foreach (var item in arr)
             {
 
                 if (list.IndexOf(item) != -1)
@@ -93,13 +93,13 @@ namespace ConsoleApp1
         }
 
         public static int[] SearchRange(int[] nums, int target)
-        { 
-            if(Array.IndexOf(nums, target) != -1)
+        {
+            if (Array.IndexOf(nums, target) != -1)
             {
                 int start = Array.IndexOf(nums, target);
                 int[] startend = new int[2];
                 startend[0] = start;
-                for(int i=start; i<nums.Length; i++)
+                for (int i = start; i < nums.Length; i++)
                 {
                     if (nums[i] == target)
                     {
@@ -113,30 +113,63 @@ namespace ConsoleApp1
         }
 
 
-        public string ZigZagConversion(string s, int numRows)
+        public static string ZigZagConversion(string s, int numRows)
         {
-            List<string> list = new List<string>(); 
+            List<string> list = new List<string>();
             var sArr = s.ToArray();
-            for(int i=0; i<s.Length/numRows;i++)
+            int sArrIndex = 0;
+            int prepostcheck = 0;
+
+            int listIndex = 0;
+            for (int i = 0; sArrIndex < sArr.Length; i++)
             {
-                for(int j=0; j<numRows; j++)
+                if (prepostcheck % 2 == 0)
                 {
+                    while (listIndex < numRows && sArr.Length > sArrIndex)
+                    {
+                        if (i == 0)
+                        {
+                            list.Add(sArr[sArrIndex].ToString());
+                        }
+                        else
+                        {
+                            list[listIndex] += sArr[sArrIndex];
+                        }
 
+                        sArrIndex++;
+                        listIndex++;
+                    }
+                    listIndex -= 2;
                 }
-
-                for (int k = 0; k < numRows; k++)
+                else
                 {
+                    while (listIndex > 0 && sArr.Length > sArrIndex)
+                    {
+                        list[listIndex] += sArr[sArrIndex];
 
+                        sArrIndex++;
+                        listIndex--;
+                    }
                 }
+                prepostcheck++;
             }
+
+            string zigzagStr = "";
+            for (int j = 0; j < numRows; j++)
+            {
+                zigzagStr += list[j];
+            }
+            return zigzagStr;
         }
 
         public static void Main()
         {
             // Console.WriteLine(RomanToInt("MCMXCIV"));
             // LengthOfLongestSubstring("abcabcbb");
-            var result = SearchRange(new int[] { 1 }, 1);
-            Console.WriteLine(string.Join(",",result));
+            //var result = SearchRange(new int[] { 1 }, 1);
+            //Console.WriteLine(string.Join(",", result));
+            var result = ZigZagConversion("A", 2);
+            Console.WriteLine(result);
             Thread.Sleep(10000);
         }
     }
